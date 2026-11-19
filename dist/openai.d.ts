@@ -1,0 +1,13 @@
+export { internationalPhone } from "./phone.ts";
+export type IdentityKind = "email" | "phone" | "first_name" | "last_name" | "external_id" | "city" | "region" | "postal_code" | "country";
+export declare function normalizeEmail(raw: string): string | null;
+export declare function normalizePhone(raw: string): string | null;
+export declare function normalizeName(raw: string): string | null;
+export declare function normalizeExternalId(raw: string): string | null;
+export declare function normalizeGeo(raw: string): string | null;
+export declare function normalizeCountry(raw: string): string | null;
+export declare function normalizePostalCode(raw: string): string | null;
+export declare const isSha256Hex: (value: string) => boolean;
+export declare function normalizeByKind(kind: IdentityKind, raw: string): string | null;
+export declare function hashIdentifier(kind: IdentityKind, raw: string | null | undefined): string | null;
+export declare function appendIdentifier(list: readonly string[], kind: IdentityKind, raw: string | null | undefined): string[];

@@ -1,0 +1,245 @@
+{
+  "spec": "openai",
+  "version": 1,
+  "description": "OpenAI Conversions API identifiers: normalized value and SHA-256 (lowercase hex). Matches the OpenAI browser SDK (oaiq) so browser and server produce the same value. normalized=null means dropped, except pre-hashed input (normalized=null, sha256=the input lowercased). Geo kinds are sent in clear (sha256=null). See SPEC.md.",
+  "vectors": [
+    {
+      "kind": "phone",
+      "input": "+1 (415) 555-2671",
+      "normalized": "14155552671",
+      "sha256": "758fbf68945f21c416814c539ab578876c8d98fb69e6da692def92cd52417fe0",
+      "note": "example from the OpenAI documentation"
+    },
+    {
+      "kind": "phone",
+      "input": "0084 912 345 678",
+      "normalized": "84912345678",
+      "sha256": "25cc2f7574420a2d46c9f2d6cf94cdbb242ef7d479afe92ed6e8eb33a7493093",
+      "note": "all leading zeros removed"
+    },
+    {
+      "kind": "phone",
+      "input": "+84.912.345.678",
+      "normalized": "84912345678",
+      "sha256": "25cc2f7574420a2d46c9f2d6cf94cdbb242ef7d479afe92ed6e8eb33a7493093",
+      "note": "dots removed"
+    },
+    {
+      "kind": "phone",
+      "input": "12345",
+      "normalized": null,
+      "sha256": null,
+      "note": "fewer than 8 digits: dropped"
+    },
+    {
+      "kind": "phone",
+      "input": "1234567890123456",
+      "normalized": null,
+      "sha256": null,
+      "note": "more than 15 digits: dropped"
+    },
+    {
+      "kind": "phone",
+      "input": "call 0912345678",
+      "normalized": null,
+      "sha256": null,
+      "note": "contains letters: dropped"
+    },
+    {
+      "kind": "email",
+      "input": "  John.Doe@Example.COM ",
+      "normalized": "john.doe@example.com",
+      "sha256": "836f82db99121b3481011f16b49dfa5fbc714a0d1b1b9f784a1ebbbf5b39577f",
+      "note": "trim + lowercase"
+    },
+    {
+      "kind": "first_name",
+      "input": "O'Connor",
+      "normalized": "oconnor",
+      "sha256": "7a0fbfdf40cbeb97429bdb88f512cecd27f0d44b7e57986ab578423bb61936ac",
+      "note": "ASCII punctuation removed"
+    },
+    {
+      "kind": "first_name",
+      "input": "José",
+      "normalized": "josé",
+      "sha256": "d994e1d001886fe5b45b1267bd1fa2b752ac50742579bd3dad7b2a2aa0ed6866",
+      "note": "non-ASCII letters kept"
+    },
+    {
+      "kind": "first_name",
+      "input": "Mary Jane",
+      "normalized": "maryjane",
+      "sha256": "f08f448a5e7a9dc3619bb7c129f6a7d5fc6af002cea17ad71dfdc1c68f4d4e0e",
+      "note": "spaces removed"
+    },
+    {
+      "kind": "last_name",
+      "input": "Nguyễn Văn",
+      "normalized": "nguyễnvăn",
+      "sha256": "ba2b1e80b5da00a2e6d94a5cf005536eb575f8e52f52c5fc7cd29b1fab73d5e6",
+      "note": "Vietnamese letters kept (NFC input), no Unicode normalization"
+    },
+    {
+      "kind": "last_name",
+      "input": "Smith-Jones",
+      "normalized": "smithjones",
+      "sha256": "6a77f47e3dec33252edbebb457d65e90501b643806c50cf8d6c3e2bd9cb74681",
+      "note": "hyphen removed"
+    },
+    {
+      "kind": "external_id",
+      "input": " Cust-001 ",
+      "normalized": "Cust-001",
+      "sha256": "701ec93e85ff120e4c4906df64eeb896ffad2fb605706740a05ad4acd748fac1",
+      "note": "trim only, case kept"
+    },
+    {
+      "kind": "phone",
+      "input": "(415) 555-2671",
+      "normalized": "4155552671",
+      "sha256": "e732f608bbbff0e451359dd805daf3a9540eb9b42cffe06120b784af9e8a6ac6",
+      "note": "no international prefix: country code 1 is NOT added"
+    },
+    {
+      "kind": "phone",
+      "input": "+1 415 555 267",
+      "normalized": null,
+      "sha256": null,
+      "note": "international prefix + code 1 without 11 digits: dropped (North America rule)"
+    },
+    {
+      "kind": "phone",
+      "input": "001 415 555 2671",
+      "normalized": "14155552671",
+      "sha256": "758fbf68945f21c416814c539ab578876c8d98fb69e6da692def92cd52417fe0",
+      "note": "00 is also an international prefix"
+    },
+    {
+      "kind": "phone",
+      "input": "+0 912 345 678",
+      "normalized": null,
+      "sha256": null,
+      "note": "'+0': dropped"
+    },
+    {
+      "kind": "email",
+      "input": "not-an-email",
+      "normalized": null,
+      "sha256": null,
+      "note": "invalid email: dropped"
+    },
+    {
+      "kind": "email",
+      "input": "a@b",
+      "normalized": null,
+      "sha256": null,
+      "note": "domain without a dot: dropped"
+    },
+    {
+      "kind": "first_name",
+      "input": "12345",
+      "normalized": null,
+      "sha256": null,
+      "note": "digits only: dropped (needs a non-digit character)"
+    },
+    {
+      "kind": "last_name",
+      "input": "Anne-Marie",
+      "normalized": "annemarie",
+      "sha256": "67495eb5715de43c26f7c18b25cc7f62a7540236516bd59d5162a6f743598083",
+      "note": "hyphen removed"
+    },
+    {
+      "kind": "email",
+      "input": "355BE7E68E2F3A0CA64E397F0F811E6CC93FE253E4DFFD044605107AF99E9912",
+      "normalized": null,
+      "sha256": "355be7e68e2f3a0ca64e397f0f811e6cc93fe253e4dffd044605107af99e9912",
+      "note": "already SHA-256: kept, lowercased, not hashed again"
+    },
+    {
+      "kind": "city",
+      "input": "  Hà   Nội ",
+      "normalized": "hà nội",
+      "sha256": null,
+      "note": "geo: trim, lowercase, collapse spaces, accents kept; sent in clear, NOT hashed"
+    },
+    {
+      "kind": "city",
+      "input": "SAN FRANCISCO",
+      "normalized": "san francisco",
+      "sha256": null,
+      "note": "lowercase"
+    },
+    {
+      "kind": "region",
+      "input": " Hồ Chí Minh ",
+      "normalized": "hồ chí minh",
+      "sha256": null,
+      "note": "Vietnamese letters kept"
+    },
+    {
+      "kind": "postal_code",
+      "input": " SW1A 1AA ",
+      "normalized": "sw1a 1aa",
+      "sha256": null,
+      "note": "letters/digits/space/hyphen, at most 31 characters"
+    },
+    {
+      "kind": "postal_code",
+      "input": "94107-1234",
+      "normalized": "94107-1234",
+      "sha256": null,
+      "note": "hyphen kept"
+    },
+    {
+      "kind": "postal_code",
+      "input": "ABC#12",
+      "normalized": null,
+      "sha256": null,
+      "note": "unexpected character: dropped"
+    },
+    {
+      "kind": "country",
+      "input": " VN ",
+      "normalized": "vn",
+      "sha256": null,
+      "note": "ISO 3166-1 alpha-2, lowercase"
+    },
+    {
+      "kind": "country",
+      "input": "VNM",
+      "normalized": null,
+      "sha256": null,
+      "note": "not 2 letters: dropped"
+    },
+    {
+      "kind": "first_name",
+      "input": "ΟΔΥΣΣΕΑΣ",
+      "normalized": "οδυσσεας",
+      "sha256": "8a4ed222aefe666884143220a2a798e9a6d1159d6bc3dbe186d2ae1b67064731",
+      "note": "JavaScript lowercase: final sigma"
+    },
+    {
+      "kind": "first_name",
+      "input": "İlker",
+      "normalized": "i\u0307lker",
+      "sha256": "d84ca9eba4642af21f521c5ab217d38d8b899e586be98751a00e0eca46f95a18",
+      "note": "JavaScript lowercase: U+0130 becomes i + U+0307"
+    },
+    {
+      "kind": "email",
+      "input": "ſam@example.com",
+      "normalized": null,
+      "sha256": null,
+      "note": "U+017F (long s) is not an ASCII letter: dropped"
+    },
+    {
+      "kind": "email",
+      "input": "Kim@Example.com",
+      "normalized": "kim@example.com",
+      "sha256": "5d9a0087d4ccdb9bc50e88c4713479119e48a326fd360d647cf1643f3cae13e7",
+      "note": "U+212A (Kelvin sign) lowercases to ASCII k"
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "spec": "phone-international",
+  "version": 1,
+  "description": "Converts a phone number taken from an address (often national format) to international format using the country of that same address. Runs before phone normalization. expected=null means the number cannot be converted safely (no guessing). See SPEC.md.",
+  "rules": [
+    "Trim JavaScript whitespace; empty => null. Starts with + or 00 => returned unchanged.",
+    "Remove JavaScript whitespace and ( ) . - ; any other non-digit, or a missing country => null. Country is trimmed and uppercased.",
+    "North America (US, CA, PR): 10 digits => +1...; 11 digits starting with 1 => +...; otherwise null.",
+    "Countries with trunk prefix 0 (34 countries) => +<code> + number without that 0; RU, KZ (trunk 8) => +7 + number without that 8; no trunk prefix => null.",
+    "Country not in the table => null."
+  ],
+  "vectors": [
+    {
+      "input": "+84 912 345 678",
+      "country": "VN",
+      "expected": "+84 912 345 678",
+      "note": "already has + : kept as is"
+    },
+    {
+      "input": "0084912345678",
+      "country": "VN",
+      "expected": "0084912345678",
+      "note": "already has 00 : kept as is"
+    },
+    {
+      "input": "+84912345678",
+      "country": null,
+      "expected": "+84912345678",
+      "note": "already international: kept even without country"
+    },
+    {
+      "input": "0983 714 965",
+      "country": "VN",
+      "expected": "+84983714965",
+      "note": "trunk 0 => +84"
+    },
+    {
+      "input": "(08) 1234-5678",
+      "country": "th",
+      "expected": "+66812345678",
+      "note": "lowercase country code"
+    },
+    {
+      "input": "07700 900123",
+      "country": "GB",
+      "expected": "+447700900123",
+      "note": "GB trunk 0"
+    },
+    {
+      "input": "030 123456",
+      "country": "DE",
+      "expected": "+4930123456",
+      "note": "DE trunk 0"
+    },
+    {
+      "input": "(415) 555-0123",
+      "country": "US",
+      "expected": "+14155550123",
+      "note": "North America 10 digits"
+    },
+    {
+      "input": "1 415 555 0123",
+      "country": "CA",
+      "expected": "+14155550123",
+      "note": "North America 11 digits starting with 1"
+    },
+    {
+      "input": "415 555 012",
+      "country": "US",
+      "expected": null,
+      "note": "North America wrong length"
+    },
+    {
+      "input": "8 912 345 67 89",
+      "country": "RU",
+      "expected": "+79123456789",
+      "note": "trunk 8 => +7"
+    },
+    {
+      "input": "983714965",
+      "country": "VN",
+      "expected": null,
+      "note": "missing trunk 0: no guessing"
+    },
+    {
+      "input": "312 345 6789",
+      "country": "IT",
+      "expected": null,
+      "note": "country without a trunk prefix"
+    },
+    {
+      "input": "0983714965",
+      "country": null,
+      "expected": null,
+      "note": "missing country"
+    },
+    {
+      "input": "0983714965",
+      "country": "ZZ",
+      "expected": null,
+      "note": "unknown country"
+    },
+    {
+      "input": "09-abc",
+      "country": "VN",
+      "expected": null,
+      "note": "contains letters"
+    },
+    {
+      "input": "",
+      "country": "VN",
+      "expected": null,
+      "note": "empty"
+    },
+    {
+      "input": "  0983 714 965  ",
+      "country": "VN",
+      "expected": "+84983714965",
+      "note": "trimmed"
+    },
+    {
+      "input": "   ",
+      "country": "VN",
+      "expected": null,
+      "note": "whitespace only"
+    },
+    {
+      "input": "0",
+      "country": "VN",
+      "expected": null,
+      "note": "a single 0"
+    },
+    {
+      "input": "0983.714.965",
+      "country": " vn ",
+      "expected": "+84983714965",
+      "note": "dots + country with spaces"
+    },
+    {
+      "input": "+0983714965",
+      "country": "VN",
+      "expected": "+0983714965",
+      "note": "+0 kept as is (removed later by phone normalization)"
+    },
+    {
+      "input": "00 84 983 714 965",
+      "country": "VN",
+      "expected": "00 84 983 714 965",
+      "note": "00 with spaces: kept as is"
+    },
+    {
+      "input": "0983\u00a0714\u00a0965",
+      "country": "VN",
+      "expected": "+84983714965",
+      "note": "NBSP is JavaScript whitespace"
+    },
+    {
+      "input": "0983\u2028714965",
+      "country": "VN",
+      "expected": "+84983714965",
+      "note": "U+2028 is JavaScript whitespace"
+    },
+    {
+      "input": "0983\ufeff714965",
+      "country": "VN",
+      "expected": "+84983714965",
+      "note": "U+FEFF is JavaScript whitespace"
+    },
+    {
+      "input": "0983\u0085714965",
+      "country": "VN",
+      "expected": null,
+      "note": "U+0085 is NOT JavaScript whitespace"
+    },
+    {
+      "input": "()",
+      "country": "VN",
+      "expected": null,
+      "note": "nothing left after removing parentheses"
+    },
+    {
+      "input": "0983714965",
+      "country": "",
+      "expected": null,
+      "note": "empty country"
+    },
+    {
+      "input": "(212) 555-1234",
+      "country": "PR",
+      "expected": "+12125551234",
+      "note": "PR is North America"
+    },
+    {
+      "input": "12125551234",
+      "country": "US",
+      "expected": "+12125551234",
+      "note": "North America 11 digits without separators"
+    },
+    {
+      "input": "2125551234567",
+      "country": "US",
+      "expected": null,
+      "note": "North America too long"
+    },
+    {
+      "input": "8 701 234 56 78",
+      "country": "KZ",
+      "expected": "+77012345678",
+      "note": "KZ trunk 8"
+    },
+    {
+      "input": "701 234 56 78",
+      "country": "KZ",
+      "expected": null,
+      "note": "KZ without trunk prefix"
+    },
+    {
+      "input": "0412 345 678",
+      "country": "AU",
+      "expected": "+61412345678",
+      "note": "AU trunk 0"
+    },
+    {
+      "input": "021 123 4567",
+      "country": "NZ",
+      "expected": "+64211234567",
+      "note": "NZ trunk 0"
+    },
+    {
+      "input": "+33 6 12 34 56 78",
+      "country": "FR",
+      "expected": "+33 6 12 34 56 78",
+      "note": "FR already international"
+    },
+    {
+      "input": "06 12 34 56 78",
+      "country": "FR",
+      "expected": "+33612345678",
+      "note": "FR trunk 0"
+    },
+    {
+      "input": "0612345678",
+      "country": "ES",
+      "expected": null,
+      "note": "ES is not in the table"
+    }
+  ]
+}

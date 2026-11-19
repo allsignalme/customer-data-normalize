@@ -1,0 +1,47 @@
+{
+  "name": "@allsignalme/customer-data-normalize",
+  "version": "0.1.0",
+  "description": "Normalization and SHA-256 hashing of customer information for the Meta and OpenAI Conversions APIs, identical in Go and TypeScript.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allsignalme/customer-data-normalize.git"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./meta": {
+      "types": "./dist/meta.d.ts",
+      "default": "./dist/meta.js"
+    },
+    "./openai": {
+      "types": "./dist/openai.d.ts",
+      "default": "./dist/openai.js"
+    },
+    "./phone": {
+      "types": "./dist/phone.d.ts",
+      "default": "./dist/phone.js"
+    },
+    "./sha256": {
+      "types": "./dist/sha256.d.ts",
+      "default": "./dist/sha256.js"
+    }
+  },
+  "files": [
+    "dist",
+    "vectors",
+    "SPEC.md"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "gen": "node scripts/gen-tables.mjs",
+    "test": "node --test \"test/*.test.ts\""
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  }
+}
