@@ -2,7 +2,7 @@
   "name": "@allsignalme/customer-data-normalize",
   "version": "0.1.0",
   "description": "Normalization and SHA-256 hashing of customer information for the Meta and OpenAI Conversions APIs, identical in Go and TypeScript.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/allsignalme/customer-data-normalize.git"
@@ -34,7 +34,9 @@
   "files": [
     "dist",
     "vectors",
-    "SPEC.md"
+    "SPEC.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",

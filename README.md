@@ -82,5 +82,5 @@ versioning section of [SPEC.md](SPEC.md) first.
 
 ## License
 
-Parts of the Meta normalization (lookup tables, behaviour) derive from meta/capi-param-builder; see
+[MIT](LICENSE). Parts of the Meta normalization (lookup tables, behaviour) derive from meta/capi-param-builder; see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
